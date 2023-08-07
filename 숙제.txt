@@ -1,0 +1,23 @@
+
+String[] baseball = null;	//C,D,E
+
+화면에서 체크 3개하면
+
+
+-- 디비에 신규 추가해야하는 컬름
+baseball 문자열 데이터형
+category 문자열 데이터형
+sex	char(1)
+
+
+마이바티스 
+sql작성 xml파일에
+
+insert
+select
+update
+
+
+1. 신규컬럼의대한 저장처리 >
+2. 상세보기했을때 기존에 선택했던 것들 선택시켜주기 > 생각해보기
+라디오박스,체크박스,셀렉트박스.
