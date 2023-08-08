@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ottt.ottt.dao.login.LoginUserDao;
@@ -83,7 +84,10 @@ public class BoardController {
 	}
 	
 	@PostMapping("/board/write")
-	public String writePost(ArticleDTO articleDTO, RedirectAttributes rattr, Model m, HttpSession session) {
+	public String writePost(ArticleDTO articleDTO, RedirectAttributes rattr, Model m, HttpSession session
+									, @RequestParam(value="sex", required = false) String sex
+									,@RequestParam(value="category", required = false) String category
+									, @RequestParam(value = "baseballArray", required = false) List<String> baseballArray ) {
 
 		System.out.println(">>>>>>>>>>>/board/write>>>>>>>>>>");
 		System.out.println("/board/write articleDTO >>>>>>>>>>> "+articleDTO.toString());
@@ -92,6 +96,8 @@ public class BoardController {
 		UserDTO userDTO = loginUserDao.select(writer);
 		articleDTO.setUser_no(userDTO.getUser_no());
 		articleDTO.setBaseball(articleDTO.getBaseballArray().toString()); // "D,B,C"
+		articleDTO.setCategory(category);
+		articleDTO.setSex(sex);
 		
 		try {
 			if(boardService.insert(articleDTO) != 1) {

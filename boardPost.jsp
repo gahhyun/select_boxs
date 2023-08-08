@@ -102,7 +102,7 @@
     width: 1100px;
     height: 500px;
     font-size: 20px;
-    padding: 10px 0;
+    padding: 40px 0;
     border-bottom: 1.5px solid #fff;
     margin: 0 auto;
 }
@@ -224,7 +224,6 @@
       
       <form action="" id="form" class="frm" method="post">
       <div class="modi-del">
-			<c:if test="${userDTO.admin.toString() == 'Y'}">
 	        <button type="button" class="btn btn-secondary" id="modi" data-bs-toggle="modal" data-bs-target="#exampleModal">
 	          수정
 	        </button>
@@ -265,7 +264,6 @@
 	            </div>
 	          </div>
 	        </div> 
-       	</c:if>
        <c:if test="${mode == 'new'}">
 	          <!-- Button trigger modal -->
 	        <button type="button" class="btn btn-secondary" id="modi" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -323,9 +321,9 @@
 					<option value="sports"	>스포츠</option>
 				</select>
 			</div>
-			<div class="title-mainline">
+			<div class="title-mainline" style="border: none;">
 				<label class="btn" for="chk_1">
-					<input type="checkbox"  name="baseballArray" value="A"	id="chk_1">기아
+					<input type="checkbox"  name="baseballArray" value="A"	id="chk_1"><span>기아</span>
 				</label>	
 				<label class="btn" for="chk_2">
 					<input type="checkbox" name="baseballArray" 	value="B"	id="chk_2">SSG
