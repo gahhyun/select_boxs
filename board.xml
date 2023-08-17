@@ -43,7 +43,7 @@
 	  		set article_content=#{article_content}
 	  		, article_title=#{article_title}
 	  		, article_mod_dt=now()
-	  		, baseball=#{baseball}
+	  		, baseball = #{baseball}
 	  		, category=#{category}
 	  		, sex=#{sex}
 	  		where article_no = #{article_no}
@@ -54,6 +54,8 @@
 	  		where article_no = #{article_no}
 	  	</delete>
 	  	
+    	<!-- 조회수 증가 update문 추가하기-->
+    
     
     </mapper>
     

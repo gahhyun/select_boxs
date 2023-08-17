@@ -224,6 +224,7 @@
       
       <form action="" id="form" class="frm" method="post">
       <div class="modi-del">
+		<c:if test="${userDTO.admin.toString() == 'Y'}">
 	        <button type="button" class="btn btn-secondary" id="modi" data-bs-toggle="modal" data-bs-target="#exampleModal">
 	          수정
 	        </button>
@@ -264,6 +265,7 @@
 	            </div>
 	          </div>
 	        </div> 
+	   	</c:if>     
        <c:if test="${mode == 'new'}">
 	          <!-- Button trigger modal -->
 	        <button type="button" class="btn btn-secondary" id="modi" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -307,18 +309,18 @@
           </div>
 			<div class="title-mainline">
 				<span>성별</span>&nbsp;&nbsp;
-				<input class="form-check-input" type="radio" name="sex"  value="M" 	id="rdo_m" checked>
+				<input class="form-check-input" type="radio" name="sex"  value="M"  id="rdo_m"  ${articleDTO.sex == 'M' ? 'checked' : ''}>
 				<label class="" for="rdo_m">남</label>&nbsp;&nbsp;&nbsp;&nbsp;
-				<input class="form-check-input" type="radio" name="sex"  value="F"		id="rdo_f">
+				<input class="form-check-input" type="radio" name="sex"  value="F"	 id="rdo_f"  ${articleDTO.sex == 'F' ? 'checked' : ''}>
 				<label class="" for="rdo_f">여</label>		 
 			</div>
 			<div class="title-mainline">
 				<span>카테고리</span>&nbsp;&nbsp;
-				<select class="" name="category" id="category">
+				<select class="" name="category" id="category" >
 					<option value=""	>전체</option>
-					<option value="news"		>뉴스</option>
-					<option value="isu"	>시사</option>
-					<option value="sports"	>스포츠</option>
+					<option value="news"		${articleDTO.category == 'news' ? 'selected' : ''}>뉴스</option>
+					<option value="isu"	${articleDTO.category == 'isu' ? 'selected' : ''} >시사</option>
+					<option value="sports"	${articleDTO.category == 'sports' ? 'selected' : ''}>스포츠</option>
 				</select>
 			</div>
 			<div class="title-mainline" style="border: none;">
@@ -366,6 +368,22 @@
 	            </div>
 	          </div>
 	        </div>
+	        
+	        <script>
+			    // 데이터베이스에서 가져온 값
+			    var databaseValue = '${articleDTO.baseball}';
+			
+			    // 데이터베이스 값 분리
+			    var checkedValues = databaseValue.split(",");
+			
+			    // 체크박스 선택
+			    checkedValues.forEach(function(value) {
+			        var checkbox = document.querySelector('input[name="baseballArray"][value="' + value + '"]');
+			        if (checkbox) {
+			            checkbox.checked = true;
+			        }
+			    });
+			</script>
   </body>
 </html> 
 

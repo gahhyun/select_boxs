@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -60,13 +61,16 @@ public class BoardController {
 	public String read(Integer article_no, SearchItem sc, Model m, HttpSession session) {
 
 		try {
+			
 			ArticleDTO articleDTO = boardService.getArticle(article_no);
+			//조회수 증가 업데이트 실행하기
 			m.addAttribute("articleDTO", articleDTO);
 			
 			if(session.getAttribute("id") != null) {
 				UserDTO userDTO = loginUserDao.select((String) session.getAttribute("id"));
 				m.addAttribute("userDTO", userDTO);
 			}
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -84,34 +88,39 @@ public class BoardController {
 	}
 	
 	@PostMapping("/board/write")
-	public String writePost(ArticleDTO articleDTO, RedirectAttributes rattr, Model m, HttpSession session
-									, @RequestParam(value="sex", required = false) String sex
-									,@RequestParam(value="category", required = false) String category
-									, @RequestParam(value = "baseballArray", required = false) List<String> baseballArray ) {
+	public String writePost(ArticleDTO articleDTO, RedirectAttributes rattr, Model m, HttpSession session) {
 
 		System.out.println(">>>>>>>>>>>/board/write>>>>>>>>>>");
 		System.out.println("/board/write articleDTO >>>>>>>>>>> "+articleDTO.toString());
 
 		String writer = (String) session.getAttribute("id");
+
 		UserDTO userDTO = loginUserDao.select(writer);
+
 		articleDTO.setUser_no(userDTO.getUser_no());
-		articleDTO.setBaseball(articleDTO.getBaseballArray().toString()); // "D,B,C"
-		articleDTO.setCategory(category);
-		articleDTO.setSex(sex);
+		articleDTO.setBaseball(String.join(",", articleDTO.getBaseballArray()));
+		articleDTO.setCategory(articleDTO.getCategory());
+		articleDTO.setSex(articleDTO.getSex());
 		
 		try {
+
 			if(boardService.insert(articleDTO) != 1) {
 				throw new Exception("WRITE FAIL!");
 			}
+
 			rattr.addFlashAttribute("msg", "WRT_OK");
+			
 			return "redirect:/board/board";
 			
 		} catch (Exception e) {
+
 			e.printStackTrace();
 			m.addAttribute("mode", "new");			//글쓰기 모드
 			m.addAttribute("articleDTO", articleDTO);	//등록하려던 내용을 보여줘야함
 			m.addAttribute("msg", "WRT_ERR");
+
 			return "/board/boardPost";
+		
 		}
 		
 	}
@@ -121,15 +130,20 @@ public class BoardController {
 	public String modify(ArticleDTO articleDTO, RedirectAttributes rattr, Model m
 			, HttpSession session, Integer page, Integer pageSize) {
 		try {
+
 			int a = boardService.update(articleDTO);
+
 			if(a != 1) {
 				throw new Exception("Update failed");
 			}
+
 			rattr.addAttribute("page", page);
 			rattr.addAttribute("pageSize", pageSize);
 			rattr.addFlashAttribute("msg", "MOD_OK");
 			return "redirect:/board/board/read?page="+page+"&pageSize="+pageSize+"&article_no="+articleDTO.getArticle_no();
+
 		} catch (Exception e) {
+
 			e.printStackTrace();
 			m.addAttribute(articleDTO);
 			m.addAttribute("page", page);
